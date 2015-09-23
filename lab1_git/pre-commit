@@ -1,0 +1,20 @@
+#!/usr/bin/env python
+
+import sys
+import subprocess
+
+def git_line_size_check():
+    git_cmd = "git ls-tree --full-tree -r HEAD --name-only"
+    result = subprocess.check_output(git_cmd, shell=True)
+    
+    result2 = result.split()
+    for a in result2:
+       file = open(a, 'r')
+       for line in file:
+           if len(line) > 80:
+               print "ERROR: The file %s has more than 80 chars in one line" % a
+               return 1
+    return 0
+
+if __name__ == "__main__":
+    sys.exit(git_line_size_check())
